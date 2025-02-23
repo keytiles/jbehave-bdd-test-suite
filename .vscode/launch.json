@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "ServiceTesterCmd",
+            "request": "launch",
+            "mainClass": "com.keytiles.bdd.ServiceTesterCmd",
+            "projectName": "jbehave-bdd-test-suite",
+            "args": ["-testsSetupFolder", "d:/workspace/keytiles/go-projects/notification/tests/bdd-integration-test/testsuite-config"]
+        }
+    ]
+}
