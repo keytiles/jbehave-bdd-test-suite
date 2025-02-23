@@ -1,0 +1,10 @@
+*.classpath
+*.project
+*.settings/
+*target
+*.iml
+.idea/
+.checkstyle
+/.DS_Store
+/error.log
+/primary.log
