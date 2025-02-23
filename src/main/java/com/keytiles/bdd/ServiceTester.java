@@ -40,10 +40,13 @@ public class ServiceTester {
         File contextFile = new File(springFolder, "tests.context.xml");
         springServiceContainerContext = buildSpringContext(Arrays.asList("file:" + contextFile.getAbsolutePath()), null);
 
-        TestsRunner runner = new TestsRunner(springServiceContainerContext, setupFolder, storiesFolder, compositeStepsFolder);
-        runner.runTests();
-
-        stop();
+        try {
+            TestsRunner runner = new TestsRunner(springServiceContainerContext, setupFolder, storiesFolder, compositeStepsFolder);
+            runner.runTests();
+        } finally {
+            // regardless the result let's shut down normally
+            stop();
+        }
     }
 
     public void stop() {

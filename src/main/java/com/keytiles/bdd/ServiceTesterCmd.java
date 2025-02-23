@@ -63,10 +63,7 @@ public class ServiceTesterCmd {
             printUsage(ServiceTesterCmd.class.getCanonicalName(), opts, System.out);
         } catch (Exception e) {
             LOG.error("error occured during startup! shutting down...", e);
-
-        } finally {
         }
-
     }
 
     private static void printUsage(final String applicationName, final Options options, final OutputStream out) {
