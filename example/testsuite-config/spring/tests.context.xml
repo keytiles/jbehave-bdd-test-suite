@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- import these before the "propertyResolver" bean - as that one refers to things from these-->
+	<import resource="classpath:xml-dsl-include/wiremock-properties-definitions.context.xml" />
+
+	<!-- loads properties from files and command line - takes care about resolving
+		${...} placeholders -->
+	<bean id="propertyResolver"
+		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="false" />
+		<property name="locations">
+			<list>
+				<value>classpath:properties/bdd-tests-core-common.properties</value>
+			</list>
+		</property>
+		<property name="localOverride" value="true" />
+		<property name="propertiesArray">
+			<list>
+				<ref bean="wiremockProperties"/>
+			</list>
+		</property>
+	</bean>
+
+	<import resource="classpath:xml-dsl-include/wiremock-server.context.xml" />
+
+	<!-- Lets add our test subject: notification-service - run in docker -->
+<!-- 	<bean id="serviceDockerContainer" class="com.sixt.tool.bdd_testsuite.docker.DockerContainer">
+		<constructor-arg name="imageName" value="keytiles/notification-service:2.0.2" />
+		<property name="usedContainerName" value="notification-service"/>
+		<property name="portBindings" value="0.0.0.0:8080:8080, 0.0.0.0:8090:9007" />
+		<property name="volumes">
+			<map>
+				<entry key="/var/lib/docker" value="/var/lib/docker" />
+				<entry key="${filesFolder}" value="/testsuite/filesFolder" />
+			</map>
+		</property>
+		<property name="env">
+			<list>
+				<value>CORE_API_HOST_URL=http://localhost/${wiremock.server.port}</value>
+				<value>LOG_CFG_PATH=/testsuite/filesFolder/log-config.yaml</value>
+				<value>SERVICE_NAME=notification-service</value>
+				<value>SERVICE_VERSION=latest</value>
+			</list>
+		</property>
+	</bean>
+ -->
+
+	<!-- Let's add our test subject - the Go Service! Just started from the compiled exe with configured Dvelve server makes it remote debuggable -->
+	<!-- NOTE!!! As -->
+	<bean id="goServiceController" class="com.sixt.tool.bdd_testsuite.runners.goapp.GoAppController">
+		<property name="appStartCommand" value="${setupFolder}/notification-service.exe" />
+
+		<!-- NOTE: uncomment the below if you want to start Dvelve debugger server on the specific port!
+		     That makes it possible to remote-attach to the Go service from VSCode so you can debug it. -->
+		<!-- <property name="dvelvePort" value="2345" /> -->
+	</bean>
+
+</beans>

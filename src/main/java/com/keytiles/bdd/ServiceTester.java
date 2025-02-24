@@ -3,6 +3,7 @@ package com.keytiles.bdd;
 import com.keytiles.bdd.tests.TestsRunner;
 import com.sixt.tool.bdd_testsuite.runners.api.context.SystemPropertyInjectionHandler;
 import org.apache.commons.io.IOUtils;
+import org.junit.runner.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +24,7 @@ public class ServiceTester {
 
     private AbstractApplicationContext springServiceContainerContext;
     private File setupFolder, springFolder, storiesFolder, compositeStepsFolder, filesFolder;
+    private Result lastResult;
 
     public ServiceTester(File setupFolder, File springFolder, File storiesFolder, File compositeStepsFolder, File filesFolder) {
         this.springFolder = springFolder;
@@ -40,9 +42,15 @@ public class ServiceTester {
         File contextFile = new File(springFolder, "tests.context.xml");
         springServiceContainerContext = buildSpringContext(Arrays.asList("file:" + contextFile.getAbsolutePath()), null);
 
+        lastResult = null;
+
         try {
             TestsRunner runner = new TestsRunner(springServiceContainerContext, setupFolder, storiesFolder, compositeStepsFolder);
             runner.runTests();
+            lastResult = runner.getResult();
+        } catch (Throwable t) {
+            LOG.error("TestRunner reported exception: "+t, t);
+            throw t;
         } finally {
             // regardless the result let's shut down normally
             stop();
@@ -57,6 +65,10 @@ public class ServiceTester {
         }
         IOUtils.closeQuietly(springServiceContainerContext, null);
         springServiceContainerContext = null;
+    }
+
+    public Result getLastResult() {
+        return lastResult;
     }
 
 

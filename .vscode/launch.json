@@ -13,11 +13,12 @@
         },
         {
             "type": "java",
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
             "name": "ServiceTesterCmd",
             "request": "launch",
             "mainClass": "com.keytiles.bdd.ServiceTesterCmd",
             "projectName": "jbehave-bdd-test-suite",
-            "args": ["-testsSetupFolder", "d:/workspace/keytiles/go-projects/notification/tests/bdd-integration-test/testsuite-config"]
+            "args": ["-testsSetupFolder", "d:/workspace/keytiles/go-projects/notification/tests/bdd-integration-test/testsuite-config/"]
         }
     ]
 }

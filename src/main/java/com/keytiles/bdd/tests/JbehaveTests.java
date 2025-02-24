@@ -14,16 +14,22 @@ import com.sixt.tool.bdd_testsuite.jbehave.steps.HttpSteps;
 import com.sixt.tool.bdd_testsuite.jbehave.steps.WaitSteps;
 import com.sixt.tool.bdd_testsuite.jbehave.steps.WiremockSteps;
 import org.apache.commons.io.FileUtils;
+import org.jbehave.core.Embeddable;
 import org.jbehave.core.configuration.Configuration;
+import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.LoadFromRelativeFile;
+import org.jbehave.core.reporters.FilePrintStreamFactory.ResolveToPackagedName;
+import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.jbehave.core.reporters.Format;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 public class JbehaveTests extends CommonJBehaveTest {
@@ -75,15 +81,26 @@ public class JbehaveTests extends CommonJBehaveTest {
 
     @Override
     protected void customizeConfiguration(Configuration configuration) {
-        try {
+            // we remove complex reporting - keep only console and simple text reporting
+            StoryReporterBuilder reporterBuilder = configuration.storyReporterBuilder();
+            StoryReporterBuilder newReporterBuilder = new StoryReporterBuilder() //
+                    // Let's put the reports into "<testSetupFolder>/reports" folder
+                    // It's funny, that to achieve this we actually need to point this /reports/something because actually
+                    // it looks the (baked in) "jbehave" folder will be created as the sibling of the given path... :-P
+                    // so the below basically will encure that the reports will be in "<testSetupFolder>/reports/jbehave" ...
+                    .withCodeLocation(CodeLocations.codeLocationFromPath(TestsRunner.testSetupFolder.getAbsolutePath() +"/reports/something-does-not-matter")) //
+                    //.withCodeLocation(storiesFolderURL) //
+                    .withFailureTrace(reporterBuilder.reportFailureTrace()) //
+                    .withFailureTraceCompression(reporterBuilder.compressFailureTrace()) //
+                    .withCrossReference(reporterBuilder.crossReference());
+            newReporterBuilder.withFormats(Format.CONSOLE, Format.TXT);
+            configuration.useStoryReporterBuilder(newReporterBuilder);
+
             configuration //
                     //.useStoryLoader(new LoadFromRelativeFile(TestsRunner.storiesFolder.toURI().toURL())) //
-                    .useStoryLoader(new LoadFromRelativeFile(TestsRunner.testSetupFolder.toURI().toURL())) //
-                    .useCompositePaths(new HashSet<>(compositeStepsPaths()));
+                    .useStoryLoader(new LoadFromRelativeFile(CodeLocations.codeLocationFromPath(TestsRunner.testSetupFolder.getAbsolutePath()))) //
+                    .useCompositePaths(new HashSet<>(compositeStepsPaths())); //
 
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("Oops we failed to configure jBehave! It looks there is a problem with 'stories' folder... "+e, e);
-        }
     }
 
     @Override

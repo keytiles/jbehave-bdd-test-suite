@@ -4,6 +4,7 @@ import com.sixt.tool.bdd_testsuite.CommonJBehaveTest;
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -22,6 +23,8 @@ public class TestsRunner {
     static File testSetupFolder;
     static File storiesFolder;
     static File compositeStepsFolder;
+
+    private Result result;
 
     public TestsRunner(AbstractApplicationContext springServiceContainerContext, File testSetupFolder, File storiesFolder, File compositeStepsFolder) {
         CommonJBehaveTest.setTestsSpringContext(springServiceContainerContext);
@@ -64,7 +67,17 @@ public class TestsRunner {
         resultReport(result);
     }
 
+    public Result getResult() {
+        return result;
+    }
+
     private void resultReport(Result result) {
         LOG.info("Finished. Result: Failures: {}, Ignored: {}. Tests run: {}. Time: {} ms.", result.getFailureCount(), result.getIgnoreCount(), result.getRunCount(), result.getRunTime());
+        int idx = 1;
+        for (Failure failure : result.getFailures()) {
+            LOG.error("failure #{}: {}", idx, failure);
+            idx++;
+        }
+        this.result = result;
     }
 }

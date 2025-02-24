@@ -4,7 +4,7 @@ Brings Gherkin language based .story files to facilitate no-code tests at Integr
 
 This is implemented on the top of the open sourced "com.sixt.tool.bdd-test-suite" testing framework.
 
-# How to use
+# How to use?
 
 Don't worry you don't need to do any Java coding! ;-) But you will need to be able to execute Java code. 
 
@@ -22,6 +22,11 @@ Follow these steps to get it work:
     It follows a certain format and content - see below!
  1. Start the tool with "java -jar <path-to-jar-file> -testsSetupFolder <path-to-tests-setup-folder"
 
+Apart from the above it also makes sense to prepare your VSCode a bit with useful Gherkin plugins!
+Check https://keytiles.atlassian.net/wiki/spaces/KEYTILES/pages/208961537/BDD+integration-testing+a+Go+microservice#Prepare-VSCode
+
 # Test setup folder
 
-TODO document how it works!
+Just take a look into the [example/testsuite-config](example/testsuite-config/) folder!
+
+Read the [README.md](example/testsuite-config/README.md) file there!

@@ -1,0 +1,29 @@
+loggers:
+
+  # loggers of underlying Core API clients
+  keytiles.core_api_client:
+    level: debug
+    handlers:
+      - stdout_plain
+      - stderr_plain
+
+  root:
+    level: debug
+    handlers:
+      - stdout_plain
+      - stderr_plain
+
+# These are appenders config
+handlers:
+  # This handler logs to STDOUT in structured JSON format
+  stdout_plain:
+    level: debug
+    encoding: console
+    outputPaths:
+      - stdout
+  # let's see warnings / errors in red :-P
+  stderr_plain:
+    level: warn
+    encoding: console
+    outputPaths:
+      - stderr

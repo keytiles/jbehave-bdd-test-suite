@@ -40,7 +40,7 @@
 
 
 	<!-- log level for the project classes - package com.ar -->
-	<logger name="com.ar" level="DEBUG">
+	<logger name="com.keytiles.bdd" level="DEBUG">
 	</logger>
 	<!-- Sixt BDD test suite classes log level -->
 	<logger name="com.sixt.tool.bdd_testsuite" level="INFO">

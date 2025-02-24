@@ -3,6 +3,7 @@ package com.keytiles.bdd;
 import com.google.common.base.Preconditions;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FilenameUtils;
+import org.junit.runner.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ public class ServiceTesterCmd {
         CommandLineParser cmdParser = new DefaultParser();
         CommandLine cmdLine;
 
+        int exitCode = 0;
         try {
             cmdLine = cmdParser.parse(opts, args);
 
@@ -59,11 +61,23 @@ public class ServiceTesterCmd {
             ServiceTester serviceTester = new ServiceTester(testSetupFolder, springFolder, storiesFolder, compositeStepsFolder, filesFolder);
             serviceTester.start();
 
+            Result results = serviceTester.getLastResult();
+            if (results == null) {
+                LOG.error("tests did not return test results... this must be a failure");
+                exitCode = 2;
+            } else if (results.getFailureCount() > 0) {
+                LOG.error("tests reported failure result - num of failures: {}", results.getFailureCount());
+                exitCode = 3;
+            }
+
         } catch (ParseException pe) {
             printUsage(ServiceTesterCmd.class.getCanonicalName(), opts, System.out);
         } catch (Exception e) {
             LOG.error("error occured during startup! shutting down...", e);
+            exitCode = 1;
         }
+
+        System.exit(exitCode);
     }
 
     private static void printUsage(final String applicationName, final Options options, final OutputStream out) {

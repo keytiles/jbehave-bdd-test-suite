@@ -1,0 +1,27 @@
+{
+    "new": [
+        {
+            "createdAt": 1740163697,
+            "htmlContent": "sdfdfdfdf",
+            "id": "933eddac-740d-45bf-b143-661bc964c5b5",
+            "severity": "info",
+            "title": "new msg 4"
+        },
+        {
+            "createdAt": 1740162761,
+            "htmlContent": "sdfdfdfdf",
+            "id": "b7367f37-b03f-48fa-8984-3f4aa5c07c13",
+            "severity": "info",
+            "title": "new msg 3"
+        }
+    ],
+    "seen": [
+        {
+            "createdAt": 1740137713,
+            "htmlContent": "warning message<br/>\r\n2nd line comes here",
+            "id": "424fb5d0-2190-435e-8e02-c6e98f527fd0",
+            "severity": "warning",
+            "title": "duplicated warning summary"
+        }
+    ]
+}
