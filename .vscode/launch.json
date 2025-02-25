@@ -13,7 +13,11 @@
         },
         {
             "type": "java",
-            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED",
+            // we set story timeout to 1 hour - to make sure we have enough time to debug the app if we want
+            // the --add-opens stuff is there because jBehave report generation fails with 
+            // error "Unable to make field private final byte[] java.lang.String.value accessible: module java.base does not "opens java.lang" to unnamed module" otherwise
+            // fix see: https://stackoverflow.com/questions/74783705/unrecognized-option-add-opens-when-passed-with-java-options
+            "vmArgs": "--add-opens java.base/java.lang=ALL-UNNAMED -DuseStoryTimeout=3600",
             "name": "ServiceTesterCmd",
             "request": "launch",
             "mainClass": "com.keytiles.bdd.ServiceTesterCmd",

@@ -16,6 +16,7 @@ import com.sixt.tool.bdd_testsuite.jbehave.steps.WiremockSteps;
 import org.apache.commons.io.FileUtils;
 import org.jbehave.core.Embeddable;
 import org.jbehave.core.configuration.Configuration;
+import org.jbehave.core.embedder.EmbedderControls;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.LoadFromRelativeFile;
 import org.jbehave.core.reporters.FilePrintStreamFactory.ResolveToPackagedName;
@@ -77,7 +78,6 @@ public class JbehaveTests extends CommonJBehaveTest {
         }
         return compositeStepsPaths;
     }
-
 
     @Override
     protected void customizeConfiguration(Configuration configuration) {

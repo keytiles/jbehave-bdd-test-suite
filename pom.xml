@@ -6,7 +6,7 @@
 	
 	<groupId>com.keytiles.tool</groupId>
 	<artifactId>jbehave-bdd-test-suite</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 	<name>jbehave-bdd-test-suite</name>
 	<description>This tool can be used to put together integration tests against a specific service</description>
@@ -42,7 +42,7 @@
 		<!-- <spring.version>6.0.10</spring.version> -->
 		<spring.version>5.3.27</spring.version>
 		<logback.version>1.4.8</logback.version>
-		<bdd.testsuite.version>0.2.1-SNAPSHOT</bdd.testsuite.version>
+		<bdd.testsuite.version>0.2.2-SNAPSHOT</bdd.testsuite.version>
 	</properties>
 
 	<dependencies>

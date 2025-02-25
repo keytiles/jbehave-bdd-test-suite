@@ -20,7 +20,7 @@ Follow these steps to get it work:
     * For releases: https://nexus.keytiles.com/nexus/content/repositories/public-releases/com/keytiles/tool/jbehave-bdd-test-suite/
  1. You need to put together a test setup in a folder on your machine.  
     It follows a certain format and content - see below!
- 1. Start the tool with "java -jar <path-to-jar-file> -testsSetupFolder <path-to-tests-setup-folder"
+ 1. Start the tool with "java --add-opens java.base/java.lang=ALL-UNNAMED -DuseStoryTimeout=120 -jar <path-to-jar-file> -testsSetupFolder <path-to-tests-setup-folder"
 
 Apart from the above it also makes sense to prepare your VSCode a bit with useful Gherkin plugins!
 Check https://keytiles.atlassian.net/wiki/spaces/KEYTILES/pages/208961537/BDD+integration-testing+a+Go+microservice#Prepare-VSCode

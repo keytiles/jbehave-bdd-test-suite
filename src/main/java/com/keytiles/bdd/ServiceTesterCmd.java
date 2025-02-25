@@ -17,6 +17,20 @@ public class ServiceTesterCmd {
 
     private final static String OPT_TEST_SETUP_FOLDER = "testsSetupFolder";
 
+    /**
+     * The app exits with this code if something has happened during witing together the BDD test environment - so during startup.
+     * In this case user should check the setup - probably something is wired together wrong way...
+     */
+    public final static int EXITCODE_STARTUP_FAILED = 1;
+    /**
+     * The app exits with this code if something unexpected has happened - very likely an internal error or bug.
+     */
+    public final static int EXITCODE_INTERNAL_ERROR_OR_BUG = 2;
+    /**
+     * The app exits with this code if tests reported >0 failures.
+     */
+    public final static int EXITCODE_TESTS_FAILED = 3;
+
     public final static String STORIES_SUBFOLDER = "stories";
     public final static String SPRING_SUBFOLDER = "spring";
     public final static String COMPOSITE_STEPS_SUBFOLDER = "compositeSteps";
@@ -63,18 +77,18 @@ public class ServiceTesterCmd {
 
             Result results = serviceTester.getLastResult();
             if (results == null) {
-                LOG.error("tests did not return test results... this must be a failure");
-                exitCode = 2;
+                exitCode = EXITCODE_INTERNAL_ERROR_OR_BUG;
+                LOG.error("tests did not return test results... this must be a failure. Exiting with exitCode {}", exitCode);
             } else if (results.getFailureCount() > 0) {
-                LOG.error("tests reported failure result - num of failures: {}", results.getFailureCount());
-                exitCode = 3;
+                exitCode = EXITCODE_TESTS_FAILED;
+                LOG.error("tests reported failure result - num of failures: {} - exiting with exitCode {}", results.getFailureCount(), exitCode);
             }
 
         } catch (ParseException pe) {
             printUsage(ServiceTesterCmd.class.getCanonicalName(), opts, System.out);
         } catch (Exception e) {
-            LOG.error("error occured during startup! shutting down...", e);
-            exitCode = 1;
+            exitCode = EXITCODE_STARTUP_FAILED;
+            LOG.error("error occured during startup! shutting down... exiting with exitCode {}, error was: {}", exitCode, e);
         }
 
         System.exit(exitCode);

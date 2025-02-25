@@ -33,8 +33,15 @@ public class TestsRunner {
         TestsRunner.storiesFolder = storiesFolder;
         TestsRunner.compositeStepsFolder = compositeStepsFolder;
 
+        /*
+         * attilaw - reconsidered this
+         * As this is not possible with all class loaders for now let's do not do this!
+         * 
+         * We have introduced the "fsfile://" url schema usable in .story files next to "file://" - so maybe we do not need this hack at all?
+         * 
         // let's add the main folder to the classpath - this way files can be addressed with resource loader
         addFolderToClassPath(testSetupFolder);
+         */
     }
 
     private void addFolderToClassPath(File folder) {
@@ -47,7 +54,7 @@ public class TestsRunner {
                     Method method = urlClass.getDeclaredMethod("addURL", new Class[]{URL.class});
                     method.setAccessible(true);
                     method.invoke(urlClassLoader, new Object[]{folder.toURI().toURL()});
-                } else {
+                }else {
                     LOG.warn("could not add tests folder '{}' to the classpath... system class loader is not the class type we support! class loader class: {}", folder, sysClassLoader.getClass());
                 }
 
